@@ -45,7 +45,7 @@ def heuristic(ctx: RunContext, title: str = "") -> dict[str, Any]:
             "web": "Web page copy", "blog": "Blog article", "sms": "SMS message", "print": "Print collateral"}.get(ctx.channel, "Content")
     if main:
         goal += f" promoting {main}"
-    return {"goal": goal if not title else f"{goal} — {title}", "audience": "", "cta": cta,
+    return {"goal": goal, "audience": "", "cta": cta,
             "key_message": "", "must_keep": products[:4], "source": "heuristic", "confirmed": False}
 
 

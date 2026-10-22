@@ -1,0 +1,81 @@
+@import "tailwindcss";
+@import "@fontsource-variable/schibsted-grotesk";
+@import "@fontsource-variable/source-serif-4";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/600.css";
+
+@theme {
+  --font-sans: "Schibsted Grotesk Variable", system-ui, sans-serif;
+  --font-serif: "Source Serif 4 Variable", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-concrete: #e9eae6;
+  --color-concrete-2: #dfe0db;
+  --color-sheet: #ffffff;
+  --color-ink: #1d2127;
+  --color-ink-2: #4a5059;
+  --color-mute: #767b83;
+  --color-rule: #d3d5cf;
+  --color-chalk: #2b59d1;
+  --color-chalk-soft: #e4ebfb;
+  --color-brass: #a87b2c;
+  --color-block: #cf3a2b;
+  --color-block-soft: #fbe7e4;
+  --color-warn: #a8740a;
+  --color-warn-soft: #f8eed7;
+  --color-pass: #2c8558;
+  --color-pass-soft: #e0f1e7;
+  --color-suggest: #2b59d1;
+  --color-suggest-soft: #e4ebfb;
+}
+
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  background: var(--color-concrete);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible { outline: 2px solid var(--color-chalk); outline-offset: 2px; border-radius: 4px; }
+
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: .5; }
+
+.btn { display: inline-flex; align-items: center; gap: .4rem; height: 2.25rem; padding: 0 .9rem; border-radius: .45rem; font-weight: 600; font-size: .9rem; border: 1px solid transparent; transition: background .12s, border-color .12s; white-space: nowrap; }
+.btn-primary { background: var(--color-chalk); color: white; }
+.btn-primary:hover:not(:disabled) { background: #2149b4; }
+.btn-ink { background: var(--color-ink); color: white; }
+.btn-ink:hover:not(:disabled) { background: #333943; }
+.btn-ghost { background: transparent; color: var(--color-ink); border-color: var(--color-rule); }
+.btn-ghost:hover:not(:disabled) { background: var(--color-concrete-2); }
+.btn-danger { background: transparent; color: var(--color-block); border-color: #e9b5ae; }
+.btn-danger:hover:not(:disabled) { background: var(--color-block-soft); }
+.btn-sm { height: 1.9rem; padding: 0 .65rem; font-size: .82rem; }
+
+.field { width: 100%; border: 1px solid var(--color-rule); background: white; border-radius: .45rem; padding: .5rem .7rem; font: inherit; color: inherit; }
+.field:focus { outline: 2px solid var(--color-chalk); outline-offset: -1px; border-color: transparent; }
+label.lbl { display: block; font-size: .82rem; font-weight: 600; color: var(--color-ink-2); margin-bottom: .3rem; }
+
+.sheet { background: var(--color-sheet); border: 1px solid var(--color-rule); border-radius: .6rem; }
+.key { font-family: var(--font-mono); font-size: .78rem; letter-spacing: -.01em; }
+
+/* inline findings on the draft */
+.mark { border-bottom: 2px solid; padding: 0 1px; border-radius: 2px; cursor: pointer; transition: background .12s; }
+.mark-block { border-color: var(--color-block); background: var(--color-block-soft); }
+.mark-warn { border-color: var(--color-warn); background: var(--color-warn-soft); }
+.mark-suggest { border-color: var(--color-suggest); background: var(--color-suggest-soft); }
+.mark-done { border-color: var(--color-rule); background: transparent; border-bottom-style: dashed; }
+.mark.active { outline: 2px solid var(--color-ink); outline-offset: 1px; }
+.mark sup { font-family: var(--font-mono); font-size: .62rem; font-weight: 600; margin-left: 1px; color: var(--color-ink-2); }
+.insert-pin { display: inline-block; width: 0; border-left: 2px solid var(--color-block); height: 1.1em; vertical-align: -0.15em; margin: 0 2px; position: relative; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.bob-drop { animation: drop .5s cubic-bezier(.3,1.4,.6,1); }
+@keyframes drop { from { transform: translateY(-10px); opacity: 0 } to { transform: none; opacity: 1 } }
