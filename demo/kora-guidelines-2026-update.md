@@ -6,7 +6,7 @@
 
 8.1 Every Instagram post must include our brand hashtag #KoraNaturals so community posts stay discoverable.
 
-8.2 Never mention competitor brands by name in our content. In particular, do not name GlowCo or PureLeaf; compare against "other gels" if you must compare at all.
+8.2 Never mention competitor brands by name in our content. In particular, never name "GlowCo" or "PureLeaf"; if you must compare, compare against other gels in general.
 
 8.3 Do not use the phrase "holy grail" to describe any product. It is overused and sounds like hype.
 

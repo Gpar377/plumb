@@ -34,6 +34,7 @@ class Settings:
     nli_model: str = field(default_factory=lambda: os.getenv("PLUMB_NLI_MODEL", "cross-encoder/nli-deberta-v3-small"))
     embed_model: str = field(default_factory=lambda: os.getenv("PLUMB_EMBED_MODEL", "sentence-transformers/all-MiniLM-L6-v2"))
     seed_on_start: bool = field(default_factory=lambda: _bool("PLUMB_SEED", True))
+    seed_examples: bool = field(default_factory=lambda: _bool("PLUMB_SEED_EXAMPLES", True))
     max_upload_bytes: int = 8 * 1024 * 1024
     max_text_chars: int = 20000
 

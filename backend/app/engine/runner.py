@@ -97,7 +97,7 @@ def analyse(ctx: RunContext, progress=lambda step: None) -> tuple[list[Draft], l
     return valid, claims, summary
 
 
-def run_version(version_id: int) -> None:
+def run_version(version_id: int, use_llm: bool = True) -> None:
     db = SessionLocal()
     try:
         v = db.get(CPRVersion, version_id)
@@ -111,7 +111,15 @@ def run_version(version_id: int) -> None:
             v.run_progress = {"step": step, "steps": STEPS}
             db.commit()
 
-        ctx = build_context(db, cpr, v.text, v.id)
+        ctx = build_context(db, cpr, v.text, v.id, use_llm=use_llm)
+        if not ctx.use_llm:
+            from ..llm import gateway
+
+            reason = ("Confidential content: external model calls are blocked; deterministic checks and local NLI only." if cpr.confidential
+                      else f"LLM unavailable ({gateway.status()['reason']}); deterministic checks and local NLI only." if not settings.llm_enabled
+                      else "Offline run (seeded example); no external model calls.")
+            gateway._log(gateway.Ctx("check_run", cpr_id=cpr.id, version_id=v.id), provider="none", model="", location="none",
+                         status="skipped", note=reason)
         if not cpr.intent:
             cpr.intent = intent_mod.extract(ctx, cpr.title)
             ctx.intent = cpr.intent
