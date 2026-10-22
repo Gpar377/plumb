@@ -1,0 +1,17 @@
+name: Keep the demo awake
+# Free Hugging Face Spaces sleep after 48 h without visitors. Judges shouldn't wait for a cold start.
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping /api/health
+        env:
+          HF_SPACE: ${{ vars.HF_SPACE }}
+        run: |
+          test -n "$HF_SPACE" || exit 0
+          host="$(echo "$HF_SPACE" | tr '/' '-' | tr '[:upper:]' '[:lower:]' | tr '_.' '--').hf.space"
+          curl -fsS --max-time 120 "https://$host/api/health" || echo "Space not reachable yet"

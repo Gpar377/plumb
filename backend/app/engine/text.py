@@ -80,7 +80,8 @@ def phrase_regex(phrase: str, case_sensitive: bool = False) -> re.Pattern[str]:
         else:
             parts.append(re.escape(ch))
     body = "".join(parts)
-    left = r"(?<![\w-])" if (phrase[:1].isalnum()) else r"(?<!\w)" if phrase[:1] not in "#₹" else ""
+    # never match inside a hashtag or @handle (e.g. the brand rule must not fire on #KoraNaturals)
+    left = r"(?<![\w#@-])" if (phrase[:1].isalnum()) else r"(?<![\w#@])" if phrase[:1] not in "#₹" else ""
     right = r"(?![\w-])" if (phrase[-1:].isalnum()) else ""
     flags = 0 if case_sensitive else re.IGNORECASE
     return re.compile(left + body + right, flags)

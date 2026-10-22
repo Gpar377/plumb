@@ -159,3 +159,10 @@ def test_redaction_restores_values():
     red = r.redact("Email asha@kora.in or call +91 98765 43210 about Project Monsoon.")
     assert "asha@kora.in" not in red and "98765" not in red and "Monsoon" not in red
     assert r.restore(red) == "Email asha@kora.in or call +91 98765 43210 about Project Monsoon."
+
+
+def test_terms_do_not_fire_inside_hashtags():
+    ds, _, _ = run("New drop from Kora Naturals today #KoraNaturals @KoraNaturals")
+    assert not any(d.rule_key == "T-1" for d in ds)
+    ds, _, _ = run("Shop KoraNaturals today")
+    assert any(d.rule_key == "T-1" for d in ds)
