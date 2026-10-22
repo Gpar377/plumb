@@ -13,3 +13,5 @@ frontend/dist/
 eval-results/
 playwright-report/
 test-results/
+demo/*.docx
+demo/*.pdf

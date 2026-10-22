@@ -1,0 +1,30 @@
+name: Deploy to Hugging Face Space
+# Needs repository secret HF_TOKEN (write token) and repository variable HF_SPACE (e.g. "your-hf-username/plumb").
+on:
+  workflow_run:
+    workflows: [CI]
+    branches: [main]
+    types: [completed]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Push to the Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE: ${{ vars.HF_SPACE }}
+        run: |
+          test -n "$HF_TOKEN" && test -n "$HF_SPACE" || { echo "Set HF_TOKEN secret and HF_SPACE variable"; exit 1; }
+          mkdir /tmp/space
+          cp -r backend demo frontend Dockerfile .dockerignore /tmp/space/
+          rm -rf /tmp/space/frontend/node_modules /tmp/space/backend/data
+          cp deploy/hf-space-README.md /tmp/space/README.md
+          cd /tmp/space
+          git init -q -b main
+          git config user.email "ci@plumb.dev" && git config user.name "Plumb CI"
+          git add -A && git commit -qm "Deploy ${GITHUB_SHA::7} from GitHub"
+          git push --force "https://user:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}" main

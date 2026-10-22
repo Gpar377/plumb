@@ -70,7 +70,7 @@ function Sidebar() {
     `block rounded-md px-3 py-1.5 text-[15px] font-medium ${isActive ? 'bg-ink text-white' : 'text-ink-2 hover:bg-concrete-2 hover:text-ink'}`
   return (
     <aside className="border-b border-rule bg-concrete md:sticky md:top-0 md:h-screen md:w-[248px] md:shrink-0 md:border-b-0 md:border-r">
-      <div className="flex h-full flex-col gap-5 px-4 py-4 md:py-6">
+      <div className="flex h-full flex-col gap-3 px-4 py-3 md:gap-5 md:py-6">
         <button onClick={() => nav('/')} className="flex items-center gap-2.5 text-left" aria-label="Plumb home">
           <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden><rect width="32" height="32" rx="7" fill="#1D2127" /><line x1="16" y1="4" x2="16" y2="16" stroke="#E9EAE6" strokeWidth="1.6" /><path d="M16 15 L22 21 L16 29 L10 21 Z" fill="#A87B2C" /></svg>
           <span><span className="block text-[19px] font-bold leading-none tracking-[-0.02em]">Plumb</span><span className="text-xs text-mute">Brand CI for Kora Naturals</span></span>
@@ -86,16 +86,16 @@ function Sidebar() {
           <NavLink to="/about" className={link}>How Plumb works</NavLink>
         </nav>
 
-        <div className="mt-auto space-y-3">
-          <div className="rounded-lg border border-rule bg-sheet p-3">
+        <div className="space-y-3 md:mt-auto">
+          <div className="rounded-lg border-rule bg-sheet md:border md:p-3">
             <label htmlFor="who" className="lbl">Viewing as</label>
             <select id="who" className="field py-1.5 text-sm" value={me?.id || ''} onChange={e => switchUser(e.target.value)}>
               {meta?.users.map(u => <option key={u.id} value={u.id}>{u.name} — {u.role_label}</option>)}
             </select>
-            {me && <p className="mt-1.5 text-xs leading-snug text-mute">{me.title}. Demo workspace: switch people to see each role's view.</p>}
+            {me && <p className="mt-1.5 hidden text-xs leading-snug text-mute md:block">{me.title}. Demo workspace: switch people to see each role's view.</p>}
           </div>
           {meta && (
-            <p className="flex items-center gap-2 px-1 text-xs text-mute">
+            <p className="hidden items-center gap-2 px-1 text-xs text-mute md:flex">
               <span className={`inline-block h-2 w-2 rounded-full ${meta.llm.enabled ? 'bg-pass' : 'bg-warn'}`} />
               {meta.llm.enabled ? `AI checks on (${meta.llm.model})` : 'AI checks off: rules + local models only'}
             </p>

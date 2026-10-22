@@ -34,10 +34,11 @@ CHANNELS = {"instagram", "linkedin", "x", "email", "web", "blog", "sms", "print"
 def extract_text(filename: str, data: bytes) -> str:
     name = filename.lower()
     if name.endswith(".pdf"):
-        import fitz  # PyMuPDF
+        import pymupdf
 
-        with fitz.open(stream=data, filetype="pdf") as doc:
-            return "\n\n".join(page.get_text("text") for page in doc).strip()
+        with pymupdf.open(stream=data, filetype="pdf") as doc:
+            raw = "\n".join(page.get_text("text") for page in doc)
+        return _reflow(raw)
     if name.endswith(".docx"):
         import docx
 
@@ -47,6 +48,26 @@ def extract_text(filename: str, data: bytes) -> str:
         return data.decode("utf-8").strip()
     except UnicodeDecodeError:
         return data.decode("latin-1").strip()
+
+
+def _reflow(raw: str) -> str:
+    """PDF text arrives as wrapped lines. Rebuild paragraphs: a new one starts at a
+    numbered clause (e.g. '8.1 ...'), a short heading-like line, or a blank line."""
+    paras: list[str] = []
+    cur: list[str] = []
+    for line in raw.splitlines():
+        t = line.strip()
+        starts = bool(re.match(r"^\d+(\.\d+)*\.?\s", t))
+        if not t or starts or (len(t) < 60 and not t.endswith((".", ",")) and not cur):
+            if cur:
+                paras.append(" ".join(cur))
+                cur = []
+            if not t:
+                continue
+        cur.append(t)
+    if cur:
+        paras.append(" ".join(cur))
+    return "\n\n".join(paras).strip()
 
 
 # ------------------------------------------------------------------ citation check

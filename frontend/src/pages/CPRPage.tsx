@@ -46,7 +46,7 @@ export default function CPRPage() {
   const numbered = useMemo(() => new Map(findings.map((f, i) => [f.id, i + 1])), [findings])
   const grouped = useMemo(() => [...findings].sort((a, b) => (isOpen(a) ? 0 : 1) - (isOpen(b) ? 0 : 1) || SEV_ORDER[a.severity] - SEV_ORDER[b.severity] || a.start - b.start), [findings])
 
-  if (error) return <ErrorNote msg={error} />
+  if (error) return <div className="space-y-3"><ErrorNote msg={error} />{me?.role === 'creator' && <p className="text-ink-2">Creators only see their own drafts. Switch to Meera (brand) or Rohan (claims) in the sidebar to see every Content PR.</p>}</div>
   if (!c) return <p className="flex items-center gap-2 text-ink-2"><Spinner /> Loading…</p>
 
   const v = c.latest

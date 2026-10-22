@@ -1,0 +1,12 @@
+# torch is installed separately from the CPU wheel index (see Dockerfile / CI)
+fastapi==0.159.1
+uvicorn[standard]==0.54.0
+SQLAlchemy==2.1.6
+pydantic==2.14.1
+httpx==0.28.1
+python-multipart==0.0.32
+pymupdf==2.0
+python-docx==1.2.0
+numpy==2.5.4
+sentence-transformers==6.2.0
+transformers==5.20.2
